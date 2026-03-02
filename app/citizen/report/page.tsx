@@ -12,7 +12,8 @@ import { MapPin, Upload, X, Crosshair, CheckCircle, Twitter, AlertTriangle, Chev
 
 declare global {
   interface Window {
-    google: typeof google;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    google: any;
     initMap: () => void;
   }
 }
