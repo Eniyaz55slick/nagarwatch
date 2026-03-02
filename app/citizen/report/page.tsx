@@ -30,8 +30,8 @@ export default function ReportIssuePage() {
   const [scannedIssues, setScannedIssues] = useState<ScannedIssue[]>([]);
   const [showScanned, setShowScanned] = useState(false);
   const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<google.maps.Map | null>(null);
-  const markerRef = useRef<google.maps.Marker | null>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const markerRef = useRef<any>(null);
 
   const [form, setForm] = useState({
     title: "", description: "", city_id: user?.city_id || "", ward_name: "",
@@ -62,7 +62,7 @@ export default function ReportIssuePage() {
   function initMap() {
     if (!mapRef.current) return;
     const defaultCenter = { lat: 11.0168, lng: 76.9558 }; // Coimbatore
-    const map = new window.google.maps.Map(mapRef.current, {
+    const map = new (window as any).google.maps.Map(mapRef.current, {
       center: defaultCenter, zoom: 13,
       styles: [
         { elementType: "geometry", stylers: [{ color: "#1d2033" }] },
@@ -76,7 +76,7 @@ export default function ReportIssuePage() {
     setMapLoaded(true);
 
     // Click on map to set location
-    map.addListener("click", (e: google.maps.MapMouseEvent) => {
+    map.addListener("click", (e: any) => {
       if (!e.latLng) return;
       const lat = e.latLng.lat();
       const lng = e.latLng.lng();
@@ -400,3 +400,4 @@ export default function ReportIssuePage() {
     </div>
   );
 }
+
