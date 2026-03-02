@@ -10,9 +10,9 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { MapPin, Upload, X, Crosshair, CheckCircle, Twitter, AlertTriangle, ChevronDown } from "lucide-react";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare global {
   interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     google: any;
     initMap: () => void;
   }
@@ -83,7 +83,7 @@ export default function ReportIssuePage() {
       placeMarker(lat, lng, map);
       setForm(f => ({ ...f, latitude: String(lat), longitude: String(lng) }));
       // Reverse geocode
-      const geocoder = new window.google.maps.Geocoder();
+      const geocoder = new (window as any).google.maps.Geocoder();
       geocoder.geocode({ location: { lat, lng } }, (results, status) => {
         if (status === "OK" && results?.[0]) {
           setForm(f => ({ ...f, location_text: results[0].formatted_address }));
@@ -92,11 +92,11 @@ export default function ReportIssuePage() {
     });
   }
 
-  function placeMarker(lat: number, lng: number, map: google.maps.Map) {
+  function placeMarker(lat: number, lng: number, map: any) {
     if (markerRef.current) markerRef.current.setMap(null);
-    markerRef.current = new window.google.maps.Marker({
+    markerRef.current = new (window as any).google.maps.Marker({
       position: { lat, lng }, map,
-      icon: { path: window.google.maps.SymbolPath.CIRCLE, scale: 10, fillColor: "#6366f1", fillOpacity: 1, strokeColor: "#fff", strokeWeight: 2 },
+      icon: { path: (window as any).google.maps.SymbolPath.CIRCLE, scale: 10, fillColor: "#6366f1", fillOpacity: 1, strokeColor: "#fff", strokeWeight: 2 },
     });
     map.panTo({ lat, lng });
   }
@@ -128,7 +128,7 @@ export default function ReportIssuePage() {
         if (mapInstanceRef.current) {
           placeMarker(latitude, longitude, mapInstanceRef.current);
           // Reverse geocode
-          const geocoder = new window.google.maps.Geocoder();
+          const geocoder = new (window as any).google.maps.Geocoder();
           geocoder.geocode({ location: { lat: latitude, lng: longitude } }, (results, status) => {
             if (status === "OK" && results?.[0]) {
               setForm(f => ({ ...f, location_text: results[0].formatted_address }));
@@ -400,4 +400,3 @@ export default function ReportIssuePage() {
     </div>
   );
 }
-
